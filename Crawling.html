@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Crawling Data &#8212; UAS PPW-LSA</title>
+    <title>Crawling Data &#8212; UAS PPW-LSA, KMEANS</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -97,7 +97,7 @@ const thebe_selector_output = ".output, .cell_output"
       <img src="_static/logo.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">UAS PPW-LSA</h1>
+      <h1 class="site-logo" id="site-title">UAS PPW-LSA, KMEANS</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -130,13 +130,18 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="codekeseluruhan.html">
-   Import Library
+  <a class="reference internal" href="KMeans.html">
+   K-Means
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="KMeans.html">
-   K-Means
+  <a class="reference external" href="https://colab.research.google.com/drive/1dOqjCkGwhFCItcsiujB03_5m6VwzvSns?usp=sharing">
+   Code LSA
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://colab.research.google.com/drive/1Pu3yWC8UDll457eS4UmhDm_e_etFcBKq?usp=sharing">
+   Code Kmeans
   </a>
  </li>
 </ul>
@@ -316,37 +321,32 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Crawling Data
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#instalasi-scrapy">
    Instalasi scrapy
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#membuat-file-scrapy">
    Membuat File Scrapy
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menjalankan-spyder-baru">
    Menjalankan Spyder baru
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menulis-program-scapper">
    Menulis Program Scapper
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menjalankan-file-spider">
    Menjalankan File Spider
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menyimpan-data-kedalam-excel">
    Menyimpan Data Kedalam Excel
   </a>
@@ -370,37 +370,32 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Crawling Data
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#instalasi-scrapy">
    Instalasi scrapy
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#membuat-file-scrapy">
    Membuat File Scrapy
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menjalankan-spyder-baru">
    Menjalankan Spyder baru
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menulis-program-scapper">
    Menulis Program Scapper
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menjalankan-file-spider">
    Menjalankan File Spider
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#menyimpan-data-kedalam-excel">
    Menyimpan Data Kedalam Excel
   </a>
@@ -415,27 +410,26 @@ title="Print to PDF"
                 
               <div>
                 
-  <section id="crawling-data">
+  <section class="tex2jax_ignore mathjax_ignore" id="crawling-data">
 <h1>Crawling Data<a class="headerlink" href="#crawling-data" title="Permalink to this headline">#</a></h1>
 <p>Crawling adalah sebuah proses di mana mesin pencarian seperti Google dapat mencari dan memindai konten yang berada di situs web berupa artikel, lembar produk, gambar, link, dll.</p>
 <p>Salah satu framework pada python yang digunakan untuk crawling data yaitu scrapy. scrapy digunakan untuk mengekstrak, menyimpan data dari sebuah website.</p>
-</section>
 <section id="instalasi-scrapy">
-<h1>Instalasi scrapy<a class="headerlink" href="#instalasi-scrapy" title="Permalink to this headline">#</a></h1>
+<h2>Instalasi scrapy<a class="headerlink" href="#instalasi-scrapy" title="Permalink to this headline">#</a></h2>
 <p>Selanjutnya untuk menginstall scrapy dapat dilakukan pada command promt dengan code berikut</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">scrapy</span>
 </pre></div>
 </div>
 </section>
 <section id="membuat-file-scrapy">
-<h1>Membuat File Scrapy<a class="headerlink" href="#membuat-file-scrapy" title="Permalink to this headline">#</a></h1>
+<h2>Membuat File Scrapy<a class="headerlink" href="#membuat-file-scrapy" title="Permalink to this headline">#</a></h2>
 <p>Dalam pembuatan file scrapy baru dapat dilakukan dengan kode dibawah ini</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">startproject</span> <span class="n">namaproject</span>
 </pre></div>
 </div>
 </section>
 <section id="menjalankan-spyder-baru">
-<h1>Menjalankan Spyder baru<a class="headerlink" href="#menjalankan-spyder-baru" title="Permalink to this headline">#</a></h1>
+<h2>Menjalankan Spyder baru<a class="headerlink" href="#menjalankan-spyder-baru" title="Permalink to this headline">#</a></h2>
 <p>yang pertama yaitu masuk ke dalam projecscrapy kemudian membuat spider baru</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">nama</span> <span class="n">project</span>
 </pre></div>
@@ -446,7 +440,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="menulis-program-scapper">
-<h1>Menulis Program Scapper<a class="headerlink" href="#menulis-program-scapper" title="Permalink to this headline">#</a></h1>
+<h2>Menulis Program Scapper<a class="headerlink" href="#menulis-program-scapper" title="Permalink to this headline">#</a></h2>
 <p>Setelah kita membuat file pada spider, maka pada file tersebut telah tersedia file dengan nama file yang telah kita buat pada pembuatan spider.</p>
 <p>Pada file tadi telah tersedia code untuk kita melakukan scraping yang nanti bisa kita ubah sesuai yang kita inginkan.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span> 
@@ -485,18 +479,19 @@ title="Print to PDF"
 <p>Class parse gunanya untuk melakukan follow link</p>
 </section>
 <section id="menjalankan-file-spider">
-<h1>Menjalankan File Spider<a class="headerlink" href="#menjalankan-file-spider" title="Permalink to this headline">#</a></h1>
+<h2>Menjalankan File Spider<a class="headerlink" href="#menjalankan-file-spider" title="Permalink to this headline">#</a></h2>
 <p>Pada proses ini kita masuk kedalam direktori spider terlebih dahulu, lalu running spider menggunakan command</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">runspider</span> <span class="n">namafile</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </section>
 <section id="menyimpan-data-kedalam-excel">
-<h1>Menyimpan Data Kedalam Excel<a class="headerlink" href="#menyimpan-data-kedalam-excel" title="Permalink to this headline">#</a></h1>
+<h2>Menyimpan Data Kedalam Excel<a class="headerlink" href="#menyimpan-data-kedalam-excel" title="Permalink to this headline">#</a></h2>
 <p>Kita dapat menyimpan data yang telah kita ambil dari suatu web dengan cara:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">crawl</span> <span class="n">namafile</span> <span class="o">-</span><span class="n">O</span> <span class="n">namafileyangdiinginkan</span><span class="o">.</span><span class="n">xlsx</span>
 </pre></div>
 </div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">

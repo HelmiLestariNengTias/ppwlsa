@@ -339,6 +339,23 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#id1">
    K-Means
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduksi-dimensi">
+     Reduksi Dimensi
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#menampilkan-hasil-cluster">
+     Menampilkan hasil cluster
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualisasi">
+     Visualisasi
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -378,6 +395,23 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#id1">
    K-Means
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reduksi-dimensi">
+     Reduksi Dimensi
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#menampilkan-hasil-cluster">
+     Menampilkan hasil cluster
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualisasi">
+     Visualisasi
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -396,14 +430,8 @@ title="Print to PDF"
 <h2>K-Means Clustering<a class="headerlink" href="#k-means-clustering" title="Permalink to this headline">#</a></h2>
 <p>K-Means Clustering adalah suatu metode penganalisaan data atau metode Data Mining yang melakukan proses pemodelan unssupervised learning dan menggunakan metode yang mengelompokan data berbagai partisi.</p>
 <p>K Means Clustering memiliki objective yaitu meminimalisasi object function yang telah di atur pada proses clasterisasi. Dengan cara minimalisasi variasi antar 1 cluster dengan maksimalisasi variasi dengan data di cluster lainnya.</p>
-<p>K means clustering merupakan metode algoritma dasar,yang diterapkan sebagai berikut</p>
 <ul class="simple">
-<li><p>Menentukan jumlah cluster</p></li>
-<li><p>Secara acak mendistribusikan data cluster</p></li>
-<li><p>Menghitung rata rata dari data yang ada di cluster.</p></li>
-<li><p>Menggunakan langkah baris 3 kembali sesuai nilai treshold</p></li>
-<li><p>Menghitung jarak antara data dan nilai centroid(K means clustering)</p></li>
-<li><p>Distance space dapat diimplementasikan untuk menghitung jarak data dan centroid. Contoh penghitungan jarak yang sering digunakan adalah manhattan/city blok distance</p></li>
+<li><p>​</p></li>
 </ul>
 </section>
 <section id="tujuan">
@@ -431,6 +459,7 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">adjusted_rand_score</span>
 </pre></div>
 </div>
+<p>Setelah kita import library selanjutnya kita masuk ke tahap preprocessing, untuk tahap ini kita sudah membahas bada bab preprocessing, jadi kita langsung masuk ke tahap KMeans</p>
 </section>
 <section id="id1">
 <h2>K-Means<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
@@ -444,6 +473,9 @@ title="Print to PDF"
 <span class="c1"># store cluster labels in a</span>
 </pre></div>
 </div>
+<section id="reduksi-dimensi">
+<h3>Reduksi Dimensi<a class="headerlink" href="#reduksi-dimensi" title="Permalink to this headline">#</a></h3>
+<p>Reduksi dimensi adalah pengurangan dimensi suatu dataset dengan pertimbangan bahwa informasi-informasi penting tetap dipertahankan, kemudian kada tahap ini kita menggunakan metode PCA</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 
 <span class="c1"># initialize PCA with 2 components</span>
@@ -461,6 +493,10 @@ title="Print to PDF"
 <span class="n">dataPTA</span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x1</span>
 </pre></div>
 </div>
+</section>
+<section id="menampilkan-hasil-cluster">
+<h3>Menampilkan hasil cluster<a class="headerlink" href="#menampilkan-hasil-cluster" title="Permalink to this headline">#</a></h3>
+<p>Kemudian kita menampilkan hasil cluster</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_top_keywords</span><span class="p">(</span><span class="n">n_terms</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This function returns the keywords for each centroid of the KMeans&quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="c1"># groups the TF-IDF vector by cluster</span>
@@ -472,6 +508,10 @@ title="Print to PDF"
 <span class="n">get_top_keywords</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="visualisasi">
+<h3>Visualisasi<a class="headerlink" href="#visualisasi" title="Permalink to this headline">#</a></h3>
+<p>Kemudian kita melakukan visualisasikan Cluster</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># map clusters to appropriate labels </span>
 <span class="n">cluster_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;sport&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;tech&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;religion&quot;</span><span class="p">}</span>
 <span class="c1"># apply mapping</span>
@@ -480,6 +520,7 @@ title="Print to PDF"
 <span class="nb">print</span> <span class="p">(</span><span class="n">x1</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Melakukan visualisasi data menggunakan scatter plot</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="c1"># set image size</span>
@@ -494,6 +535,7 @@ title="Print to PDF"
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
 </section>
 </section>
 

@@ -8,14 +8,7 @@ K-Means Clustering adalah suatu metode penganalisaan data atau metode Data Minin
 
 K Means Clustering memiliki objective yaitu meminimalisasi object function yang telah di atur pada proses clasterisasi. Dengan cara minimalisasi variasi antar 1 cluster dengan maksimalisasi variasi dengan data di cluster lainnya.
 
-K means clustering merupakan metode algoritma dasar,yang diterapkan sebagai berikut
-
-- Menentukan jumlah cluster
-- Secara acak mendistribusikan data cluster
-- Menghitung rata rata dari data yang ada di cluster.
-- Menggunakan langkah baris 3 kembali sesuai nilai treshold
-- Menghitung jarak antara data dan nilai centroid(K means clustering)
-- Distance space dapat diimplementasikan untuk menghitung jarak data dan centroid. Contoh penghitungan jarak yang sering digunakan adalah manhattan/city blok distance
+- ​
 
 ## Tujuan
 
@@ -44,7 +37,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics import adjusted_rand_score
 ```
 
-
+Setelah kita import library selanjutnya kita masuk ke tahap preprocessing, untuk tahap ini kita sudah membahas bada bab preprocessing, jadi kita langsung masuk ke tahap KMeans 
 
 ## K-Means
 
@@ -59,6 +52,10 @@ kmeans = KMeans(n_clusters=4, random_state=42)
 kmeans.fit(X)
 # store cluster labels in a
 ```
+
+### Reduksi Dimensi
+
+Reduksi dimensi adalah pengurangan dimensi suatu dataset dengan pertimbangan bahwa informasi-informasi penting tetap dipertahankan, kemudian kada tahap ini kita menggunakan metode PCA
 
 ```python
 from sklearn.decomposition import PCA
@@ -79,6 +76,10 @@ dataPTA['x0'] = x0
 dataPTA['x1'] = x1
 ```
 
+### Menampilkan hasil cluster
+
+Kemudian kita menampilkan hasil cluster
+
 ```python
 def get_top_keywords(n_terms):
     """This function returns the keywords for each centroid of the KMeans"""
@@ -91,6 +92,10 @@ def get_top_keywords(n_terms):
 get_top_keywords(10)
 ```
 
+### Visualisasi
+
+Kemudian kita melakukan visualisasikan Cluster
+
 ```python
 # map clusters to appropriate labels 
 cluster_map = {0: "sport", 1: "tech", 2: "religion"}
@@ -99,6 +104,8 @@ dataPTA['cluster'] = dataPTA['cluster'].map(cluster_map)
 print (x0)
 print (x1)
 ```
+
+Melakukan visualisasi data menggunakan scatter plot
 
 ```python
 import matplotlib.pyplot as plt

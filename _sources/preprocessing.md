@@ -57,7 +57,7 @@ print('\n\n\n')
 
 ## Removal
 
-Removal yaitu menghilangkan 
+Removal yaitu menghilangkan atau pembuangan kata atau karakter yang tidak dibutuhkan. 
 
 ```python
 #Import Library untuk Tokenisasi

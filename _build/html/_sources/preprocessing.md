@@ -24,41 +24,50 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 ## Read Data PTA
 
-Sebelum melakukan prepocessing disini kita akan membaca data dari data PTA 
+Sebelum melakukan prepocessing disini kita akan membaca data dari data PTA .trunojoyo.ac.id
 
+```python
+dataPTA = pd.read_excel('hasilmanajemen.xlsx')
 ```
-dataPTA = pd.read_excel('PTAscrawl.xlsx')
+
+```python
+dataPTA.head(10)
 ```
+
+
 
 ## Case Folding
 
-Case folding adalah tahapan pertama yang biasa dilakukan saat melakukan tekt prepocessing. case folding digunakan untuk menyamaratakan penggunaan huruf kapital dan diubah menjadi huruf kecil.
+Tahapan pertama yang biasanya dilakukan adalah tahapan case folding. Tahapan ini hampir selalu disertakan ketika melakukan text preprocessing. Mengapa? Karena data yang kita miliki tidak selalu terstruktur dan konsisten dalam penggunaan huruf kapital. Jadi, peran dari case folding adalah untuk menyamaratakan penggunaan huruf kapital. 
 
-misalnya: tulisan dari "HanDphOne" maka pada proses case folding akan dirubah menjadi "handphone"
+Misalnya data teks yang kita dapat berupa tulisan "DaTA SCIence" maka dengan case folding artinya kita mengubah semua huruf menjadi huruf kecil (lowercase) semua. Sementara itu, karakter lain yang bukan termasuk huruf dan angka, seperti tanda baca dan spasi dianggap sebagai delimiter. Delimiter ini bisa juga dihapus atau diabaikan dengan menggunakan perintah yang ada di Python.
 
-```
+```python
 
 # gunakan fungsi Series.str.lower() pada Pandas
-dataPTA['Abstrak'] = dataPTA['Abstrak'].str.lower()
+dataPTA.abstrak = dataPTA.abstrak.astype(str)
+dataPTA['abstrak'] = dataPTA['abstrak'].str.lower()
 
 print('Case Folding Result : \n')
 
 #cek hasil case fold
-print(dataPTA['Abstrak'].head(5))
+print(dataPTA['abstrak'].head(5))
 print('\n\n\n')
 ```
 
-## Tokenizing
+## Removal
 
-Tahap tokenizing adalah tahap pemotongan kata pada white space atau spasi dan membuang karakter tanda baca.
+Removal yaitu menghilangkan 
 
-misalnya: tulisan "dia sangat pintar" maka pada pada proses tokenizing akan menjadi dia, sangat, pintar. 
+```python
+#Import Library untuk Tokenisasi
+import string 
+import re #regex library
 
-## Stopword Removal 
+# import word_tokenize & FreqDist dari NLTK
+from nltk.tokenize import word_tokenize 
+from nltk.probability import FreqDist
 
-Pada tahap ini adalah tahap pemilihan kata- kata yang dianggap penting. misalnya pada penggunaan karakter, kata hubung, nomor dll
-
-```
 def remove_PTA_special(text):
     # menghapus tab, new line, dan back slice
     text = text.replace('\\t'," ").replace('\\n'," ").replace('\\u'," ").replace('\\',"")
@@ -69,43 +78,168 @@ def remove_PTA_special(text):
     # menghapus incomplete URL
     return text.replace("http://", " ").replace("https://", " ")
                 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_PTA_special)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_PTA_special)
 
 #menghapus nomor
 def remove_number(text):
     return  re.sub(r"\d+", "", text)
 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_number)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_number)
 
 #menghapus punctuation
 def remove_punctuation(text):
     return text.translate(str.maketrans("","",string.punctuation))
 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_punctuation)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_punctuation)
 
 #menghapus spasi leading & trailing
 def remove_whitespace_LT(text):
     return text.strip()
 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_whitespace_LT)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_whitespace_LT)
 
 #menghapus spasi tunggal dan ganda
 def remove_whitespace_multiple(text):
     return re.sub('\s+',' ',text)
 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_whitespace_multiple)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_whitespace_multiple)
 
 # menghapus kata 1 abjad
 def remove_singl_char(text):
     return re.sub(r"\b[a-zA-Z]\b", "", text)
 
-dataPTA['Abstrak'] = dataPTA['Abstrak'].apply(remove_singl_char)
+dataPTA['abstrak'] = dataPTA['abstrak'].apply(remove_singl_char)
 
-print('Result : \n') 
-print(dataPTA['Abstrak'].head())
-print('\n\n\n')
+# Tokenisasi
+def word_tokenize_wrapper(text):
+    return word_tokenize(text)
+
+dataPTA['abstrak_token'] = dataPTA['abstrak'].apply(word_tokenize_wrapper)
+
+print('Tokenizing Result : \n') 
+print(dataPTA['abstrak_token'].head())
 ```
+
+
+
+## Tokenizing
+
+Kita ambil contoh adalah data tweet atau kumpulan dataset pesan spam pasti terdiri dari kalimat. Nah, untuk memudahkan proses analisis data kita harus memecah kalimat-kalimat tersebut menjadi kata atau disebut dengan token. Dengan tokenizing kita dapat membedakan mana antara pemisah kata atau bukan. Jika menggunakan bahasa pemrograman python biasanya tokenizing juga mencakup proses removing number, removing punctuation seperti simbol dan tanda baca yang tidak penting, serta removing whitespace. Selain itu tokenizing juga akan merujuk pada NLTK, tetapi yang sangat disayangkan adalah NLTK belum support bahasa Indonesia. Tapi, jangan khawatir karena kita masih bisa menggunakan modul sastrawi.
+
+## Stopword  
+
+Tujuan utama dalam penerapan proses stopwords ini adalah mengurangi jumlah kata dalam sebuah dokumen yang nantinya akan berpengaruh dalam kecepatan dan performa NLP.
+
+Karakteristik utama dalam pemilihan stopwords biasanya adalah kata yang mempunyai frekuensi kemunculan yang tinggi misalnya kata penghubung seperti “dan”, “atau”, “tapi”, “akan” dan lainnya.
+
+```python
+from nltk.corpus import stopwords
+
+list_stopwords = stopwords.words('indonesian')
+
+# Mengubah List ke dictionary
+list_stopwords = set(list_stopwords)
+
+
+#remove stopword pada list token
+def stopwords_removal(words):
+    return [word for word in words if word not in list_stopwords]
+
+#aStopwording
+dataPTA['abstrak_stop'] = dataPTA['abstrak_token'].apply(stopwords_removal) 
+
+
+print(dataPTA['abstrak_stop'].head(20))
+```
+
+```python
+dataPTA.head()
+```
+
+
 
 ## Stemming
 
-Tahap stemming adalah tahapan dimana untuk memperkecil jumlah indeks yang berbeda dari satu data sehingga nantinya akan menjadi dalam bentuk dasar. 
+Tahap stemming adalah tahapan yang juga diperlukan untuk memperkecil jumlah indeks yang berbeda dari satu data sehingga sebuah kata yang memiliki suffix maupun prefix akan kembali ke bentuk dasarnya. Selain itu juga untuk melakukan pengelompokan kata-kata lain yang memiliki kata dasar dan arti yang serupa namun memiliki bentuk yang berbeda karena mendapatkan imbuhan yang berbeda pula. Di library NLTK juga sudah tersedia modul untuk proses stemming antara lain, porter, lancester, wordnet, dan snowball. Tapi, kembali lagi modul-modul tersebut belum support untuk text berbahasa Indonesia. 
+
+```python
+# import Sastrawi package
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+import swifter
+
+
+# membuat stemmer
+factory = StemmerFactory()
+stemmer = factory.create_stemmer()
+
+# sfungsi stemmer
+def stemmed_wrapper(term):
+    return stemmer.stem(term)
+
+term_dict = {}
+
+for document in dataPTA['abstrak_stop']:
+    for term in document:
+        if term not in term_dict:
+            term_dict[term] = ' '
+            
+print(len(term_dict))
+print("------------------------")
+
+for term in term_dict:
+    term_dict[term] = stemmed_wrapper(term)
+    print(term,":" ,term_dict[term])
+    
+print(term_dict)
+print("------------------------")
+
+
+# stemming pada dataframe
+def get_stemmed_term(document):
+    return [term_dict[term] for term in document]
+
+dataPTA['abstrak_stem'] = dataPTA['abstrak_stop'].swifter.apply(get_stemmed_term)
+print(dataPTA['abstrak_stem'])
+```
+
+```python
+dataPTA.head()
+```
+
+## TF-IDF
+
+Tf-IDF dihitung menggunakan matrix mxn. m disini adalah dokumen, untuk m adalah fitur kata pada dokumen. 
+
+Perhitungan TF-IDF dapat dilakukan dengan rumus sebagai berikut:
+$$
+W_{i,j}=tfi,j\times \log \dfrac{N}{df^{j}}
+$$
+Wij= Score TF-IDF
+
+tfi,j= term dari dokumen
+
+N=Total dokumen
+
+Df j= Dokumen 
+
+```python
+vectorizer = TfidfVectorizer(stop_words='english')
+berita = []
+for data in dataPTA['abstrak_stem']:
+    isi = ''
+    for term in data:
+        isi += term + ' '
+    berita.append(isi)
+
+vectorizer.fit(berita)
+X = vectorizer.fit_transform(berita)
+print (X)
+```
+
+```python
+vect =TfidfVectorizer(stop_words=list_stopwords,max_features=1000) 
+vect_text=vect.fit_transform(dataPTA['abstrak'])
+print(vect_text.shape)
+print(vect_text)
+```
+

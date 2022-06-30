@@ -1,6 +1,6 @@
 ## Crawling Data
 
-Crawling data merupakan proses pengambilan data yang tersedia secara online, crawling dilakukan untuk extraksi data yang mengacu pada pengumpulan data dari dokumen, berita, artikel, media sosial, dll. 
+Crawling adalah sebuah proses di mana mesin pencarian seperti Google dapat mencari dan memindai konten yang berada di situs web berupa artikel, lembar produk, gambar, link, dll.
 
 Salah satu framework pada python yang digunakan untuk crawling data yaitu scrapy. scrapy digunakan untuk mengekstrak, menyimpan data dari sebuah website.
 
@@ -46,27 +46,36 @@ Setelah kita membuat file pada spider, maka pada file tersebut telah tersedia fi
 Pada file tadi telah tersedia code untuk kita melakukan scraping yang nanti bisa kita ubah sesuai yang kita inginkan. 
 
 ```python
-import scrapy
+import scrapy 
+import pandas as pd
 
-class scrapPTA(scrapy.Spider):
-    name = 'PTA'
-    allowed_domains = ['pta.trunojoyo.ac.id']
-    start_urls = ['https://pta.trunojoyo.ac.id/c_search/byprod/10/'+str(x)+" " for x in range(2,20)]
 
-    def parse(self, response):
-        for link in response.css('a.gray.button::attr(href)') :
-            yield response.follow(link.get(),callback=self.parse_categories)
 
-    def parse_categories(self, response):
-        products = response.css('div#content_journal ul li')
-        for product in products:
-            yield {
-                'judul' : product.css('div a.title::text').get().strip(),
-                'penulis' : product.css('div div:nth-child(2) span::text').get().strip(),
-                'dosen 1' : product.css('div div:nth-child(3) span::text').get().strip(),
-                'dosen 2' : product.css('div div:nth-child(4) span::text').get().strip(),
-                'abstrak' : product.css('div div:nth-child(2) p::text').get().strip()
-            }
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+
+    def start_requests(self):
+        
+        dataCSV = pd.read_csv('ptamanajemen.csv')
+        indexData = dataCSV.iloc[:, [0]].values
+        arrayData = []
+        for i in indexData:
+            ambil = i[0]
+            arrayData.append(ambil)
+        for url in arrayData:
+            yield scrapy.Request(url=url, callback=self.parse)
+
+    def parse(self,response):
+        yield {
+            'judul':response.css('#content_journal > ul > li > div:nth-child(2) > a::text').extract(),
+            'penulis':response.css('#content_journal > ul > li > div:nth-child(2) > div:nth-child(2)> span::text').extract(),
+            'dosen_1':response.css('#content_journal > ul > li > div:nth-child(2) > div:nth-child(3)> span::text').extract(),
+            'dosen_2':response.css('#content_journal > ul > li > div:nth-child(2) > div:nth-child(4)> span::text').extract(),
+            'abstrak_ID':response.css('#content_journal > ul > li > div:nth-child(4) > div:nth-child(2) > p::text').extract(),
+            'abstrak_EN':response.css('#content_journal > ul > li > div:nth-child(4) > div:nth-child(4) > p::text').extract(),
+        
+        }
+
 ```
 
 Untuk class scrapPTA() gunanya untuk spidering website.

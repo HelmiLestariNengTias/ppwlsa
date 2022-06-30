@@ -4,60 +4,25 @@ Topic modelling adalah teknik unsupervised learning tanpa pengawasan yang mampu 
 
 ## LSA (Latent Semantic Analysis)
 
-LSA merupakan salah satu cara untuk mengektraksi tulisan dan membuat representasi statistik dari dokument teks. 
+Latent Semantic Analysis (LSA) merupakan sebuah metode yang memanfaatkan model statistik matematis untuk menganalisa struktur semantik suatu teks. LSA bisa digunakan untuk menilai esai dengan mengkonversikan esai menjadi matriks-matriks yang diberi nilai pada masing-masing term untuk dicari kesamaan dengan term referensi. Secara umum, langkah-langkah LSA dalam penilaian esai adalah sebagai berikut:
+
+1. Text preprocessing
+2. Stopword removal
+3. Stemming
+
+Untuk Preprocessing nya saya sudah menjelaskan di bab preprocessing jadi disini saya  langsung masuk di tahapan LSA
 
 ## Tahapan LSA
 
-Pada tahapan LSA meliputi:
-
-### Menghitung TF-IDF
-
-Tf-IDF dihitung menggunakan matrix mxn. m disini adalah dokumen, untuk m adalah fitur kata pada dokumen. 
-
-Perhitungan TF-IDF dapat dilakukan dengan rumus sebagai berikut:
-$$
-W_{i,j}=tfi,j\times \log \dfrac{N}{df^{j}}
-$$
-Wij= Score TF-IDF
-
-tfi,j= term dari dokumen
-
-N=Total dokumen
-
-Df j= Dokumen 
-
-```python
-import pandas as pd
-import numpy as np
-#Import Library untuk Tokenisasi
-import string 
-import re #regex library
-
-# import word_tokenize & FreqDist dari NLTK
-from nltk.tokenize import word_tokenize 
-from nltk.probability import FreqDist
-from nltk.corpus import stopwords
-
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-```
-
-```python
-vect =TfidfVectorizer(stop_words=list_stopwords,max_features=1000) 
-vect_text=vect.fit_transform(dataPTA['Abstrak'])
-print(vect_text.shape)
-print(vect_text)
-```
-
 ### Menampilkan SVD
 
-SVD adalah suatu pemfaktoran matriks dengan mengurai suatu matriks kedalam dua matriks . Singular value decomposition dari matrix A dinyatakan sebagai : A= USV'
+Singular Value Decomposition (SVD) adalah salah satu teknik reduksi dimensi yang bermanfaat untuk memperkecil nilai kompleksitas dalam pemrosesan term-document matrix. SVD merupakan teorema aljabar linier yang menyebutkan bahwa persegi panjang dari term-document matrix dapat dipecah/didekomposisikan menjadi tiga matriks, yaitu :
 
-Untuk matriks U: Baris mewakili vektor dokumen pada topik
+– Matriks ortogonal U
 
-Untuk matriks V: Baris mewakili vector istilah yang dinyatakan dalam topik
+– Matriks diagonal S
 
-Untuk Matriks S: matriks diagonal yang memiliki elemen- elemen diagonal sebagai nilai singular dari A.
+– Transpose dari matriks ortogonal V
 
 Implementasi SVD pada python
 

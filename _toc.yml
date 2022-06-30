@@ -10,5 +10,5 @@ chapters:
 - file: KMeans
 - url: https://colab.research.google.com/drive/1dOqjCkGwhFCItcsiujB03_5m6VwzvSns?usp=sharing
   title: Code LSA
-- url:https://colab.research.google.com/drive/1Pu3yWC8UDll457eS4UmhDm_e_etFcBKq?usp=sharing
+- url: https://colab.research.google.com/drive/1Pu3yWC8UDll457eS4UmhDm_e_etFcBKq?usp=sharing
   title: Code Kmeans

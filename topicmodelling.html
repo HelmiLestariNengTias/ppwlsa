@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Import Library" href="codekeseluruhan.html" />
@@ -134,6 +132,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="codekeseluruhan.html">
    Import Library
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="KMeans.html">
+   K-Means
   </a>
  </li>
 </ul>
@@ -324,11 +327,6 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#menghitung-tf-idf">
-     Menghitung TF-IDF
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#menampilkan-svd">
      Menampilkan SVD
     </a>
@@ -370,11 +368,6 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#menghitung-tf-idf">
-     Menghitung TF-IDF
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#menampilkan-svd">
      Menampilkan SVD
     </a>
@@ -401,50 +394,22 @@ title="Print to PDF"
 <p>Topic modelling adalah teknik unsupervised learning tanpa pengawasan yang mampu memindai satu set dokumen, mendeteksi pola kata dan frasa didalamnya secara otomatis mengelompokkan grub kata dan ekspresi serupa</p>
 <section id="lsa-latent-semantic-analysis">
 <h2>LSA (Latent Semantic Analysis)<a class="headerlink" href="#lsa-latent-semantic-analysis" title="Permalink to this headline">#</a></h2>
-<p>LSA merupakan salah satu cara untuk mengektraksi tulisan dan membuat representasi statistik dari dokument teks.</p>
+<p>Latent Semantic Analysis (LSA) merupakan sebuah metode yang memanfaatkan model statistik matematis untuk menganalisa struktur semantik suatu teks. LSA bisa digunakan untuk menilai esai dengan mengkonversikan esai menjadi matriks-matriks yang diberi nilai pada masing-masing term untuk dicari kesamaan dengan term referensi. Secara umum, langkah-langkah LSA dalam penilaian esai adalah sebagai berikut:</p>
+<ol class="simple">
+<li><p>Text preprocessing</p></li>
+<li><p>Stopword removal</p></li>
+<li><p>Stemming</p></li>
+</ol>
+<p>Untuk Preprocessing nya saya sudah menjelaskan di bab preprocessing jadi disini saya  langsung masuk di tahapan LSA</p>
 </section>
 <section id="tahapan-lsa">
 <h2>Tahapan LSA<a class="headerlink" href="#tahapan-lsa" title="Permalink to this headline">#</a></h2>
-<p>Pada tahapan LSA meliputi:</p>
-<section id="menghitung-tf-idf">
-<h3>Menghitung TF-IDF<a class="headerlink" href="#menghitung-tf-idf" title="Permalink to this headline">#</a></h3>
-<p>Tf-IDF dihitung menggunakan matrix mxn. m disini adalah dokumen, untuk m adalah fitur kata pada dokumen.</p>
-<p>Perhitungan TF-IDF dapat dilakukan dengan rumus sebagai berikut:
-$<span class="math notranslate nohighlight">\(
-W_{i,j}=tfi,j\times \log \dfrac{N}{df^{j}}
-\)</span>$
-Wij= Score TF-IDF</p>
-<p>tfi,j= term dari dokumen</p>
-<p>N=Total dokumen</p>
-<p>Df j= Dokumen</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="c1">#Import Library untuk Tokenisasi</span>
-<span class="kn">import</span> <span class="nn">string</span> 
-<span class="kn">import</span> <span class="nn">re</span> <span class="c1">#regex library</span>
-
-<span class="c1"># import word_tokenize &amp; FreqDist dari NLTK</span>
-<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span> 
-<span class="kn">from</span> <span class="nn">nltk.probability</span> <span class="kn">import</span> <span class="n">FreqDist</span>
-<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
-<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vect</span> <span class="o">=</span><span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="n">list_stopwords</span><span class="p">,</span><span class="n">max_features</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span> 
-<span class="n">vect_text</span><span class="o">=</span><span class="n">vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataPTA</span><span class="p">[</span><span class="s1">&#39;Abstrak&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">vect_text</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">vect_text</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
 <section id="menampilkan-svd">
 <h3>Menampilkan SVD<a class="headerlink" href="#menampilkan-svd" title="Permalink to this headline">#</a></h3>
-<p>SVD adalah suatu pemfaktoran matriks dengan mengurai suatu matriks kedalam dua matriks . Singular value decomposition dari matrix A dinyatakan sebagai : A= USV’</p>
-<p>Untuk matriks U: Baris mewakili vektor dokumen pada topik</p>
-<p>Untuk matriks V: Baris mewakili vector istilah yang dinyatakan dalam topik</p>
-<p>Untuk Matriks S: matriks diagonal yang memiliki elemen- elemen diagonal sebagai nilai singular dari A.</p>
+<p>Singular Value Decomposition (SVD) adalah salah satu teknik reduksi dimensi yang bermanfaat untuk memperkecil nilai kompleksitas dalam pemrosesan term-document matrix. SVD merupakan teorema aljabar linier yang menyebutkan bahwa persegi panjang dari term-document matrix dapat dipecah/didekomposisikan menjadi tiga matriks, yaitu :</p>
+<p>– Matriks ortogonal U</p>
+<p>– Matriks diagonal S</p>
+<p>– Transpose dari matriks ortogonal V</p>
 <p>Implementasi SVD pada python</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">TruncatedSVD</span>
 <span class="n">lsa_model</span> <span class="o">=</span> <span class="n">TruncatedSVD</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;randomized&#39;</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>

@@ -134,6 +134,11 @@ const thebe_selector_output = ".output, .cell_output"
    Import Library
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="KMeans.html">
+   K-Means
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -412,7 +417,7 @@ title="Print to PDF"
                 
   <section id="crawling-data">
 <h1>Crawling Data<a class="headerlink" href="#crawling-data" title="Permalink to this headline">#</a></h1>
-<p>Crawling data merupakan proses pengambilan data yang tersedia secara online, crawling dilakukan untuk extraksi data yang mengacu pada pengumpulan data dari dokumen, berita, artikel, media sosial, dll.</p>
+<p>Crawling adalah sebuah proses di mana mesin pencarian seperti Google dapat mencari dan memindai konten yang berada di situs web berupa artikel, lembar produk, gambar, link, dll.</p>
 <p>Salah satu framework pada python yang digunakan untuk crawling data yaitu scrapy. scrapy digunakan untuk mengekstrak, menyimpan data dari sebuah website.</p>
 </section>
 <section id="instalasi-scrapy">
@@ -444,27 +449,36 @@ title="Print to PDF"
 <h1>Menulis Program Scapper<a class="headerlink" href="#menulis-program-scapper" title="Permalink to this headline">#</a></h1>
 <p>Setelah kita membuat file pada spider, maka pada file tersebut telah tersedia file dengan nama file yang telah kita buat pada pembuatan spider.</p>
 <p>Pada file tadi telah tersedia code untuk kita melakukan scraping yang nanti bisa kita ubah sesuai yang kita inginkan.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="k">class</span> <span class="nc">scrapPTA</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;PTA&#39;</span>
-    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pta.trunojoyo.ac.id&#39;</span><span class="p">]</span>
-    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://pta.trunojoyo.ac.id/c_search/byprod/10/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; &quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">20</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a.gray.button::attr(href)&#39;</span><span class="p">)</span> <span class="p">:</span>
-            <span class="k">yield</span> <span class="n">response</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span><span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_categories</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">parse_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="n">products</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div#content_journal ul li&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="p">{</span>
-                <span class="s1">&#39;judul&#39;</span> <span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div a.title::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-                <span class="s1">&#39;penulis&#39;</span> <span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div div:nth-child(2) span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-                <span class="s1">&#39;dosen 1&#39;</span> <span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div div:nth-child(3) span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-                <span class="s1">&#39;dosen 2&#39;</span> <span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div div:nth-child(4) span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-                <span class="s1">&#39;abstrak&#39;</span> <span class="p">:</span> <span class="n">product</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div div:nth-child(2) p::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="p">}</span>
+<span class="k">class</span> <span class="nc">QuotesSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;quotes&quot;</span>
+
+    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="n">dataCSV</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ptamanajemen.csv&#39;</span><span class="p">)</span>
+        <span class="n">indexData</span> <span class="o">=</span> <span class="n">dataCSV</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">arrayData</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indexData</span><span class="p">:</span>
+            <span class="n">ambil</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">arrayData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ambil</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">arrayData</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">response</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s1">&#39;judul&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(2) &gt; a::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;penulis&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(2) &gt; div:nth-child(2)&gt; span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;dosen_1&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(2) &gt; div:nth-child(3)&gt; span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;dosen_2&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(2) &gt; div:nth-child(4)&gt; span::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;abstrak_ID&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(4) &gt; div:nth-child(2) &gt; p::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;abstrak_EN&#39;</span><span class="p">:</span><span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;#content_journal &gt; ul &gt; li &gt; div:nth-child(4) &gt; div:nth-child(4) &gt; p::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+        
+        <span class="p">}</span>
+
 </pre></div>
 </div>
 <p>Untuk class scrapPTA() gunanya untuk spidering website.</p>
